@@ -82,14 +82,14 @@ flowchart TD
 
 ## ✨ Key Features
 
-- **Multi-Agent Orchestration**: Coordinates four specialized AI agents using a typed LangGraph state machine.
-- **Human-in-the-Loop Review**: Presents review notes, titles, and formatted previews in the terminal before any API publication call.
-- **Iterative Feedback Loop**: Rejecting a draft automatically feeds editorial critique back into the Writer agent to produce an improved version.
-- **Flexible Rejection Options**: Choose between regenerating immediately (`Abhi`) or postponing work (`Baad me`) without saving clutter to disk.
-- **HTML Safety & Sanitization**: Strips unsafe elements (`<script>`, `<iframe>`, `<object>`, `<embed>`, `<form>`) to guarantee safe publication to Blogger.
-- **Direct Blogger Integration**: Authenticates via Google OAuth 2.0 with automatic token refresh, recovery, and interactive blog selection.
-- **Zero Disk Clutter**: No unwanted local draft files or orphan logs generated on your machine.
-- **Fast Package Management**: Built with modern `uv` for lightning-fast virtualenv creation and deterministic dependency locking.
+- **Multi-Agent Orchestration**: Coordinates four specialized agents (Orchestrator, Researcher, Writer, Reviewer) through a cyclical LangGraph state machine.
+- **Human-in-the-Loop Review**: Gated publishing mechanism requiring your explicit approval, with terminal preview and editorial critique notes.
+- **Iterative Feedback Loop**: Injects reviewer critique back into the Writer agent to progressively refine and improve rejected drafts.
+- **Flexible Rejection Handling**: Choose to regenerate an article immediately (`Abhi`) or cleanly exit the session to resume later (`Baad me`).
+- **Proactive HTML Sanitization**: Automatically strips scripts, iframes, and active elements to guarantee safe, compliant Blogger HTML.
+- **Direct Blogger Publishing**: Authenticates via Google OAuth 2.0 with automatic token refresh, recovery, and interactive blog selection.
+- **Zero Disk Clutter**: Runs cleanly without leaving orphan draft files, unapproved HTML, or unused log directories on your machine.
+- **Fast Package Management**: Built with `uv` for lightning-fast virtualenv creation and deterministic dependency locking.
 
 ---
 
@@ -217,43 +217,6 @@ Start the interactive terminal session:
 uv run main.py
 ```
 
-#### Example Session
-
-```text
-Auto Blog Multi-Agent System | LangGraph + Gemini + Blogger
-
-Blog topic (or 'exit'): What is the main concepts of the LLM
-
-[Orchestrator] Planning the blog...
-[Researcher] Finding current information...
-[Writer] Drafting the article...
-[Reviewer] Reviewing the article...
-
-Review notes:
-The blog post clearly explains tokenization, next-token prediction, embeddings, and RLHF.
-HTML is clean and safe.
-
-Title: Demystifying LLMs: The Core Concepts Behind Modern AI
-
-Preview:
-Large Language Models (LLMs) have revolutionized technology...
-
-Publish to Blogger? (yes/no): no
-
-[Reviewer] Blog publish nahi karna hai.
-Abhihi karna hai ya bad me bhi kar sakte hai -->Blog (1: Abhi / 2: Baad me): 1
-
-[Reviewer] Generating a new output now...
-[Writer] Regenerating article with reviewer feedback...
-[Reviewer] Reviewing the article...
-...
-Publish to Blogger? (yes/no): yes
-
-Successfully published: https://yourblog.blogspot.com/2026/10/demystifying-llms.html
-
-Blog topic (or 'exit'): exit
-```
-
 ---
 
 ## 🎯 Design Principles
@@ -273,16 +236,6 @@ Blog topic (or 'exit'): exit
 - **Platform Scope**: Tailored specifically for Google Blogger. Publishing to other platforms (WordPress, Medium, Dev.to) is not yet supported.
 - **API Rate Limits**: Rapid regeneration cycles may consume Gemini API quota and hit provider rate limits (`429 RESOURCE_EXHAUSTED`).
 - **Token Context Windows**: Extremely long topics or comprehensive multi-page articles may approach the token limits of smaller models.
-
----
-
-## 🔮 Future Scope
-
-- **Multi-Platform Publishing**: Adding export/publish adapters for WordPress, Medium, Dev.to, and Substack.
-- **AI Image Generation**: Integrating Imagen / DALL-E to generate and embed relevant featured banner images automatically.
-- **SEO & Keyword Optimization**: Adding an SEO Agent to calculate keyword density, suggest meta descriptions, and optimize URL slugs.
-- **Scheduled Publishing**: Background cron job support to queue and publish articles on predefined schedules.
-- **Web UI Dashboard**: Developing a modern web dashboard with rich text preview and one-click publishing.
 
 ---
 
